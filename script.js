@@ -97,7 +97,7 @@ function addParticle(text, x, y, order) {
         x,
         y,
         alpha: 0,
-        delay: order * 17,
+        delay: order * 15,
         maxAlpha: 0.94
     });
 }
@@ -272,6 +272,45 @@ function animate() {
 animate();
 
 }
+function butterflies(x, y) {
+    for (let i = 0; i < 8; i++) {
+        let b = document.createElement("img");
+        b.src = "butterfly.png"; // الفراشة بشفافية
+        b.className = "butterfly";
+
+        // البداية عند النقطة اللي ضغطت عليها
+        b.style.left = x + "px";
+        b.style.top = y + "px";
+
+        document.body.appendChild(b);
+
+        // إحداثيات الحركة العشوائية
+        let moveX = Math.random() * 400 - 200; // يمين/يسار
+        let moveY = Math.random() * 400 - 200; // فوق/تحت
+
+        // حركة تدريجية
+        b.animate([
+            { transform: 'translate(0px, 0px)', opacity: 1 },
+            { transform: `translate(${moveX}px, ${moveY}px)`, opacity: 0 }
+        ], {
+            duration: 2500,
+            easing: 'ease-out',
+            fill: 'forwards'
+        });
+
+        // إزالة الفراشة بعد الحركة
+        setTimeout(() => b.remove(), 2800);
+    }
+}
+
+
+document.addEventListener("click", function (e) {
+    const button = e.target.closest("button");
+
+    if (!button) return;
+
+    butterflies(e.clientX, e.clientY);
+});
 
     /* =====================================================
         💖 إنشاء قلوب متطايرة في الخلفية (تظهر بانتظام في الصفحة الأخيرة)
@@ -822,5 +861,11 @@ if (lockNext) {
         { threshold: 0.12 }
     );
 
+function showContact() {
+    document.getElementById("downArrow").hidden = false;
+    document.getElementById("contactUs").hidden = false;
+}
+
     storyBlocks.forEach((block) => revealObserver.observe(block));
+    showContact();
 });
