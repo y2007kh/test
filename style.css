@@ -814,175 +814,147 @@ body.love-page-open {
    Romantic Contact Ending 🤍
 ===================================== */
 
+
+/* ===== Dark Contact Ending ===== */
+
 .contact-ending {
-    box-sizing: border-box;
-    width: 100%;
-    min-height: 100vh;
-    min-height: 100dvh;
-    padding: 55px 20px;
+    position: relative;
+    min-height: 100svh;
+    padding: 70px 20px;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 
     background:
         radial-gradient(
-            circle at 15% 20%,
-            rgba(217, 154, 196, 0.22),
-            transparent 38%
+            circle at 50% 25%,
+            rgba(91, 40, 69, 0.24),
+            transparent 48%
         ),
-        radial-gradient(
-            circle at 85% 80%,
-            rgba(190, 173, 220, 0.24),
-            transparent 40%
-        ),
-        linear-gradient(145deg, #fff7fb, #f8eef7, #eee8f5);
+        linear-gradient(
+            145deg,
+            #100d15 0%,
+            #18101c 50%,
+            #0b0a10 100%
+        );
+
+    color: #f7edf3;
 }
 
-.contact-card {
-    box-sizing: border-box;
+.contact-ending .contact-card {
     width: 100%;
     max-width: 480px;
-    padding: 38px 24px;
+    padding: 36px 24px;
     text-align: center;
 
-    border: 1px solid rgba(255, 255, 255, 0.85);
-    border-radius: 30px;
-    background: rgba(255, 255, 255, 0.60);
+    background: rgba(28, 20, 31, 0.72);
+    border: 1px solid rgba(217, 154, 196, 0.22);
+    border-radius: 26px;
 
-    box-shadow: 0 20px 60px rgba(83, 52, 82, 0.10);
+    box-shadow:
+        0 20px 70px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
 
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 }
 
-.contact-eyebrow {
+.contact-ending .contact-eyebrow {
     display: block;
-    color: #b47c9e;
+    margin-bottom: 24px;
+    color: #c99bb5;
     font-size: 11px;
     letter-spacing: 3px;
-    margin-bottom: 18px;
 }
 
-.contact-rose {
+.contact-ending .contact-rose {
     font-size: 48px;
-    margin: 5px 0 12px;
-    animation: contactRoseFloat 3s ease-in-out infinite;
+    margin-bottom: 18px;
+    filter: drop-shadow(0 0 18px rgba(217, 100, 150, 0.25));
 }
 
-.contact-card h2 {
-    color: #302735;
-    font-size: clamp(28px, 7vw, 38px);
-    margin: 0 0 14px;
+.contact-ending h2 {
+    color: #fff4fa;
+    margin-bottom: 16px;
 }
 
-.contact-intro {
-    color: #786879;
-    font-size: 15px;
+.contact-ending p {
+    color: #c5b5c3;
     line-height: 2;
-    margin: 0;
 }
 
-.contact-divider {
-    width: 65px;
+.contact-ending .contact-divider {
+    width: 70px;
     height: 1px;
-    margin: 25px auto;
+    margin: 26px auto;
     background: linear-gradient(
-        to right,
+        90deg,
         transparent,
         #d99ac4,
         transparent
     );
 }
 
-.contact-dedication {
-    color: #59435b;
-    font-size: 19px;
-    line-height: 1.9;
-    margin: 0;
+.contact-ending .contact-dedication {
+    color: #e5b3ce;
+    font-size: 17px;
 }
 
-.contact-english {
-    color: #a18a9e;
+.contact-ending .contact-english {
+    color: #a99aaa;
     font-size: 13px;
-    line-height: 1.9;
-    margin: 15px 0 28px;
+    line-height: 2;
+    margin-top: 12px;
 }
 
-.contact-links {
+.contact-ending .contact-links {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     gap: 12px;
-    flex-wrap: wrap;
+    margin-top: 30px;
 }
 
-.contact-link {
-    display: inline-flex;
+.contact-ending .contact-link {
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 9px;
+    gap: 10px;
 
-    min-width: 125px;
-    padding: 13px 18px;
-    border-radius: 18px;
+    padding: 14px 18px;
+    border-radius: 14px;
 
+    color: #f8edf4;
     text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
+    background: rgba(217, 154, 196, 0.07);
+    border: 1px solid rgba(217, 154, 196, 0.2);
 
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.25s ease;
 }
 
-.contact-link span {
-    font-size: 19px;
+.contact-ending .contact-link:hover {
+    background: rgba(217, 154, 196, 0.14);
+    border-color: rgba(217, 154, 196, 0.45);
+    transform: translateY(-2px);
 }
 
-.contact-link:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 9px 22px rgba(83, 52, 82, 0.12);
-}
-
-.contact-link.whatsapp {
-    color: #39775b;
-    background: rgba(216, 238, 226, 0.85);
-}
-
-.contact-link.instagram {
-    color: #795475;
-    background: rgba(234, 216, 234, 0.85);
-}
-
-.contact-footer {
-    color: #b09bad;
+.contact-ending .contact-footer {
+    margin-top: 32px;
+    color: #786778;
     font-size: 11px;
     letter-spacing: 1px;
-    margin: 30px 0 0;
-}
-
-/* حركة الوردة */
-
-@keyframes contactRoseFloat {
-    0%, 100% {
-        transform: translateY(0) rotate(-4deg);
-    }
-
-    50% {
-        transform: translateY(-7px) rotate(4deg);
-    }
 }
 
 @media (max-width: 600px) {
     .contact-ending {
-        padding: 35px 18px;
+        padding: 50px 18px;
     }
 
-    .contact-card {
-        padding: 32px 20px;
-        border-radius: 26px;
+    .contact-ending .contact-card {
+        padding: 30px 20px;
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .contact-rose {
-        animation: none;
-    }
-}
