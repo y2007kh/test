@@ -846,10 +846,13 @@ if (lockNext) {
 
     setupConfessionSection();
 
+   
     /* =====================================================
         ظهور عناصر الصفحة تدريجيًا
     ===================================================== */
+
     const storyBlocks = document.querySelectorAll(".story-block");
+
     const revealObserver = new IntersectionObserver(
         (entries) => {
             entries.forEach((entry) => {
@@ -861,11 +864,52 @@ if (lockNext) {
         { threshold: 0.12 }
     );
 
-function showContact() {
-    document.getElementById("downArrow").hidden = false;
-    document.getElementById("contactUs").hidden = false;
-}
+    storyBlocks.forEach((block) => {
+        revealObserver.observe(block);
+    });
 
-    storyBlocks.forEach((block) => revealObserver.observe(block));
-    showContact();
+    /* =====================================================
+        ⬇️ إظهار السهم و Contact عند الوصول لآخر محتوى
+    ===================================================== */
+
+    const downArrow = document.getElementById("downArrow");
+    const contactUs = document.getElementById("contactUs");
+
+    function showContact() {
+        if (downArrow) {
+            downArrow.hidden = false;
+            downArrow.classList.add("contact-visible");
+        }
+
+        if (contactUs) {
+            contactUs.hidden = false;
+            contactUs.classList.add("contact-visible");
+        }
+    }
+
+    // نخفي العنصرين في البداية
+    if (downArrow) downArrow.hidden = true;
+    if (contactUs) contactUs.hidden = true;
+
+    // نراقب آخر صندوق محتوى في الصفحة
+    const underBoxes = document.querySelectorAll("#love-page .under-box");
+    const lastUnderBox = underBoxes.length
+        ? underBoxes[underBoxes.length - 1]
+        : null;
+
+    if (lastUnderBox) {
+        const contactObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        showContact();
+                        contactObserver.disconnect();
+                    }
+                });
+            },
+            { threshold: 0.2 }
+        );
+
+        contactObserver.observe(lastUnderBox);
+    }
 });
