@@ -582,35 +582,46 @@ function playMusic(audio) {
     /* =====================================================
         Puzzle 4 (الرقم السري)
     ===================================================== */
-    const lockNumbers = document.querySelectorAll(".lock-number");
-    const lockDigit1 = document.getElementById("lockDigit1");
-    const lockDigit2 = document.getElementById("lockDigit2");
-    const lockDigit3 = document.getElementById("lockDigit3");
-    const lockClear = document.getElementById("lockClear");
-    const lockFeedback = document.getElementById("lockFeedback");
-    const lockNext = document.getElementById("lockNext");
-    const askFriendBtn = document.getElementById("askFriendBtn");
-    const lockBox = document.querySelector(".lock-box");
-    let enteredCode = "";
-    const correctCode = "487";
-    let lockSolved = false;
+/* =====================================================
+   Puzzle 4 (الرقم السري + الاستعانة بصديق)
+===================================================== */
 
-    lockNumbers.forEach((number) => {
-        number.addEventListener("click", () => {
-            if (lockSolved || enteredCode.length >= 3) return;
-            enteredCode += number.dataset.number;
-            updateLockDisplay();
-        });
+const lockNumbers = document.querySelectorAll(".lock-number");
+const lockDigit1 = document.getElementById("lockDigit1");
+const lockDigit2 = document.getElementById("lockDigit2");
+const lockDigit3 = document.getElementById("lockDigit3");
+const lockClear = document.getElementById("lockClear");
+const lockFeedback = document.getElementById("lockFeedback");
+const lockNext = document.getElementById("lockNext");
+const askFriendBtn = document.getElementById("askFriendBtn");
+const lockBox = document.querySelector(".lock-box");
+
+let enteredCode = "";
+const correctCode = "487";
+let lockSolved = false;
+
+lockNumbers.forEach((number) => {
+    number.addEventListener("click", () => {
+        if (lockSolved || enteredCode.length >= 3) return;
+
+        enteredCode += number.dataset.number;
+        updateLockDisplay();
     });
+});
 
-    function updateLockDisplay() {
-        if (lockDigit1) lockDigit1.textContent = enteredCode[0] || "_";
-        if (lockDigit2) lockDigit2.textContent = enteredCode[1] || "_";
-        if (lockDigit3) lockDigit3.textContent = enteredCode[2] || "_";
-        if (enteredCode.length === 3) checkLock();
+function updateLockDisplay() {
+    if (lockDigit1) lockDigit1.textContent = enteredCode[0] || "_";
+    if (lockDigit2) lockDigit2.textContent = enteredCode[1] || "_";
+    if (lockDigit3) lockDigit3.textContent = enteredCode[2] || "_";
+
+    if (enteredCode.length === 3) {
+        checkLock();
     }
+}
 
-    function checkLock() {
+function checkLock() {
+    if (lockSolved) return;
+
     if (enteredCode === correctCode) {
         lockSolved = true;
 
@@ -619,15 +630,24 @@ function playMusic(audio) {
             lockFeedback.classList.add("show");
         }
 
-        if (lockBox) lockBox.classList.add("unlocked");
+        if (lockBox) {
+            lockBox.classList.remove("wrong");
+            lockBox.classList.add("unlocked");
+        }
 
-        // إخفاء الاستعانة بصديق عند إدخال الرقم الصحيح
-        if (askFriendBtn) askFriendBtn.style.display = "none";
+        // إخفاء زر الاستعانة بصديق
+        if (askFriendBtn) {
+            askFriendBtn.style.display = "none";
+        }
 
-        // إظهار زرار الاستمرار
-        if (lockNext) lockNext.classList.add("show");
+        // إظهار زر الاستمرار
+        if (lockNext) {
+            lockNext.classList.add("show");
+        }
 
-        lockNumbers.forEach((n) => n.disabled = true);
+        lockNumbers.forEach((number) => {
+            number.disabled = true;
+        });
 
     } else {
         if (lockFeedback) {
@@ -635,32 +655,59 @@ function playMusic(audio) {
             lockFeedback.classList.add("show");
         }
 
-        // إظهار الاستعانة بصديق عند إدخال رقم خاطئ
-        if (askFriendBtn) askFriendBtn.style.display = "inline-flex";
+        // إظهار زر الاستعانة بصديق
+        if (askFriendBtn) {
+            askFriendBtn.style.display = "inline-flex";
+        }
 
-        if (lockBox) lockBox.classList.add("wrong");
+        if (lockBox) {
+            lockBox.classList.add("wrong");
+        }
 
         setTimeout(() => {
-            if (lockBox) lockBox.classList.remove("wrong");
+            if (lockBox) {
+                lockBox.classList.remove("wrong");
+            }
+
+            if (lockSolved) return;
+
             enteredCode = "";
             updateLockDisplay();
         }, 700);
     }
-}}
+}
 
-    if (lockClear) {
-        lockClear.addEventListener("click", () => {
-            if (lockSolved) return;
-            enteredCode = "";
-            if (lockFeedback) lockFeedback.classList.remove("show");
-            updateLockDisplay();
-        });
-    }
+if (lockClear) {
+    lockClear.addEventListener("click", () => {
+        if (lockSolved) return;
 
-    if (puzzleNext) puzzleNext.addEventListener("click", () => showScreen(currentScreen + 1));
-    if (codeNext) codeNext.addEventListener("click", () => showScreen(currentScreen + 1));
-    if (lockNext) lockNext.addEventListener("click", () => showScreen(currentScreen + 1));
+        enteredCode = "";
 
+        if (lockFeedback) {
+            lockFeedback.classList.remove("show");
+        }
+
+        updateLockDisplay();
+    });
+}
+
+if (puzzleNext) {
+    puzzleNext.addEventListener("click", () => {
+        showScreen(currentScreen + 1);
+    });
+}
+
+if (codeNext) {
+    codeNext.addEventListener("click", () => {
+        showScreen(currentScreen + 1);
+    });
+}
+
+if (lockNext) {
+    lockNext.addEventListener("click", () => {
+        showScreen(currentScreen + 1);
+    });
+}
     /* =====================================================
         Puzzle 5 (الأبواب)
     ===================================================== */
