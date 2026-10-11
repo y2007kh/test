@@ -30,24 +30,38 @@ document.addEventListener("DOMContentLoaded", () => {
        
 
 // معادلة تحدد المساحة الداخلية للقلب
+
 const particles = [];
 
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
-
-// مقياس القلب
-const heartScale = 11.5;
-const fontSize = 10;
+const heartScale = 9.8;
+const fontSize = 9;
 const wordGap = 4;
 
 ctx.font = `bold ${fontSize}px Tahoma`;
 ctx.textAlign = "center";
 ctx.textBaseline = "middle";
 
+// عبارات متنوعة، مع كلمات قصيرة لملء الفراغات
+const lovePhrases = [
+    "أنا بحبك", "I love you", "Te amo",
+    "Je t'aime", "Ti amo", "بحبك",
+    "smokah", "يا دكتورتي", "قلبي ليكي",
+    "My love", "حبيبتي", "يا روحي",
+    "Seni seviyorum", "Ich liebe dich",
+    "أنتِ قلبي", "Forever", "يا قمري",
+    "Amo te", "كلّي ليكي", "وحشتيني",
+    "Kocham cię", "Mon amour", "يا سموكتي",
+    "بحب قلبك", "يا أجمل حاجة", "روحي",
+    "사랑해", "Aku cinta kamu", "يا حبيبتي",
+    "Ты моя любовь", "معاكي", "لآخر العمر",
+    "I choose you", "كل يوم بحبك أكتر"
+];
+
 let phraseIndex = 0;
 
-// نفس معادلة شكل القلب
-function getHeartPoint(t, scale = heartScale) {
+function getHeartPoint(t) {
     const x = 16 * Math.sin(t) ** 3;
 
     const y = -(
@@ -58,199 +72,175 @@ function getHeartPoint(t, scale = heartScale) {
     );
 
     return {
-        x: centerX + x * scale,
-        y: centerY + y * scale + 12
+        x: centerX + x * heartScale,
+        y: centerY + y * heartScale + 5
     };
 }
 
-// حساب طول المسافة بين نقطتين
-function distance(a, b) {
-    return Math.hypot(b.x - a.x, b.y - a.y);
+function nextPhrase(maxWidth = Infinity) {
+    // جرّب العبارات القصيرة لو المساحة ضيقة
+    for (let i = 0; i < lovePhrases.length; i++) {
+        const text = lovePhrases[phraseIndex % lovePhrases.length];
+        phraseIndex++;
+
+        if (ctx.measureText(text).width <= maxWidth) {
+            return text;
+        }
+    }
+
+    return "♥";
 }
 
-// تحويل النصوص إلى كلمات جاهزة للرسم
-function nextPhrase() {
-    const text = phrases[phraseIndex % phrases.length];
-    phraseIndex++;
-
-    return {
-        text,
-        width: ctx.measureText(text).width
-    };
-}
-
-// إضافة كلمة في مكانها مع ترتيب ظهورها
 function addParticle(text, x, y, order) {
     particles.push({
         text,
         x,
         y,
         alpha: 0,
-        maxAlpha: 0.95,
-        delay: order * 2,
+        delay: order * 17,
+        maxAlpha: 0.94
     });
 }
 
-// =====================================================
-// المرحلة الأولى: رسم محيط القلب بالكلمات
-// يبدأ من نقطة التقاء الانحناءين أعلى القلب
-// ثم الجانب الأيمن، وبعده الجانب الأيسر
-// =====================================================
+// ==================================================
+// المرحلة الأولى: محيط القلب
+// يبدأ من النقطة العلوية، ثم اليمين، ثم الشمال
+// ==================================================
 
-const outlinePoints = [];
-const steps = 900;
+const outline = [];
+const steps = 1600;
 
-// نقطة البداية t = 0 هي أعلى القلب في المنتصف
 for (let i = 0; i <= steps; i++) {
     const t = (Math.PI * 2 * i) / steps;
-    outlinePoints.push(getHeartPoint(t));
+    outline.push(getHeartPoint(t));
 }
 
-// حساب طول المحيط
-let perimeter = 0;
+// نحسب طول المحيط التقريبي
+const lengths = [0];
 
-for (let i = 1; i < outlinePoints.length; i++) {
-    perimeter += distance(
-        outlinePoints[i - 1],
-        outlinePoints[i]
-    );
+for (let i = 1; i < outline.length; i++) {
+    const dx = outline[i].x - outline[i - 1].x;
+    const dy = outline[i].y - outline[i - 1].y;
+
+    lengths.push(lengths[i - 1] + Math.hypot(dx, dy));
 }
 
-// توزيع الكلمات على المحيط مع الحفاظ على المسافات
-let traveled = 0;
-let nextDistance = 0;
+const perimeter = lengths[lengths.length - 1];
+const outlineCount = Math.floor(perimeter / 15);
 let outlineOrder = 0;
 
-for (let i = 1; i < outlinePoints.length; i++) {
-    const a = outlinePoints[i - 1];
-    const b = outlinePoints[i];
-    const segmentLength = distance(a, b);
+for (let n = 0; n < outlineCount; n++) {
+    const target = (n / outlineCount) * perimeter;
 
-    traveled += segmentLength;
+    let low = 0;
+    let high = lengths.length - 1;
 
-    if (traveled >= nextDistance) {
-        const word = nextPhrase();
+    while (low < high) {
+        const mid = Math.floor((low + high) / 2);
 
-        // منتصف المسافة التي وصلنا إليها
-        const ratio = segmentLength
-            ? 1 - (traveled - nextDistance) / segmentLength
-            : 0;
-
-        const x = a.x + (b.x - a.x) * ratio;
-        const y = a.y + (b.y - a.y) * ratio;
-
-        addParticle(word.text, x, y, outlineOrder++);
-
-        nextDistance += word.width + wordGap;
-    }
-}
-
-// =====================================================
-// المرحلة الثانية: ملء القلب من الداخل
-// صفوف متبادلة: كلمة يمين ثم كلمة شمال
-// نؤجل ظهورها حتى يكتمل المحيط
-// =====================================================
-
-const outlineDuration = outlineOrder * 2;
-const innerRows = [];
-
-// إنشاء صفوف داخل القلب
-for (let y = -12; y <= 12; y += 0.85) {
-    const row = [];
-
-    // حدود القلب عند هذا الارتفاع
-    let left = null;
-    let right = null;
-
-    for (let x = -16; x <= 16; x += 0.025) {
-        const nx = x / 16;
-        const ny = y / 16;
-
-        const inside =
-            Math.pow(nx * nx + ny * ny - 1, 3)
-            - nx * nx * Math.pow(ny, 3) <= 0;
-
-        if (inside) {
-            if (left === null) left = x;
-            right = x;
+        if (lengths[mid] < target) {
+            low = mid + 1;
+        } else {
+            high = mid;
         }
     }
 
-    if (left === null || right === null) continue;
+    const i = Math.max(1, low);
+    const a = outline[i - 1];
+    const b = outline[i];
 
-    // نقطة المنتصف تفصل النصفين
-    const leftEdge = centerX + left * heartScale;
-    const rightEdge = centerX + right * heartScale;
-    const middle = centerX;
+    const segment = lengths[i] - lengths[i - 1];
+    const ratio = segment > 0
+        ? (target - lengths[i - 1]) / segment
+        : 0;
 
-    const py = centerY - y * heartScale + 12;
+    const x = a.x + (b.x - a.x) * ratio;
+    const y = a.y + (b.y - a.y) * ratio;
 
-    row.push({
-        side: "right",
-        start: middle + 5,
-        end: rightEdge - 2,
-        y: py
-    });
+    const text = nextPhrase(55);
 
-    row.push({
-        side: "left",
-        start: leftEdge + 2,
-        end: middle - 5,
-        y: py
-    });
-
-    innerRows.push(row);
+    addParticle(text, x, y, outlineOrder++);
 }
 
-// نرتب الصفوف من الخارج للداخل قدر الإمكان
-// ثم نوزع الكلمات يمينًا وشمالًا بالتبادل
-let innerOrder = 0;
+// ==================================================
+// المرحلة الثانية: ملء القلب بالكامل
+// نستخدم المضلع نفسه لمعرفة حدود كل صف
+// ==================================================
 
-innerRows.sort((a, b) => {
-    const ya = Math.abs(a[0].y - centerY);
-    const yb = Math.abs(b[0].y - centerY);
-    return yb - ya;
-});
+const outlineDuration = outlineOrder * 17;
+const fillRows = [];
+const topY = Math.min(...outline.map(p => p.y));
+const bottomY = Math.max(...outline.map(p => p.y));
 
-innerRows.forEach((row) => {
-    row.forEach((section) => {
-        const availableWidth = section.end - section.start;
+// نحدد المساحة الداخلية لكل صف أفقي
+for (let y = Math.ceil(topY + 5); y < bottomY - 3; y += 10) {
+    const intersections = [];
 
-        if (availableWidth < 12) return;
+    for (let i = 1; i < outline.length; i++) {
+        const a = outline[i - 1];
+        const b = outline[i];
 
-        let x = section.start;
-        const words = [];
-
-        while (x < section.end) {
-            const word = nextPhrase();
-
-            if (word.width > section.end - x) break;
-
-            words.push({
-                text: word.text,
-                x: x + word.width / 2,
-                width: word.width
-            });
-
-            x += word.width + wordGap;
+        if ((a.y <= y && b.y > y) || (b.y <= y && a.y > y)) {
+            const ratio = (y - a.y) / (b.y - a.y);
+            intersections.push(a.x + ratio * (b.x - a.x));
         }
+    }
 
-        // ترتيب الكلمات في النصفين بحيث يظهر اليمين
-        // ثم الشمال مباشرة
-        words.forEach((word) => {
-            addParticle(
-                word.text,
-                word.x,
-                section.y,
-                outlineDuration / 2 + innerOrder++
-            );
+    intersections.sort((a, b) => a - b);
+
+    if (intersections.length >= 2) {
+        fillRows.push({
+            y,
+            left: intersections[0] + 5,
+            right: intersections[intersections.length - 1] - 5
         });
+    }
+}
+
+// نبدأ من الحواف ونتجه إلى الداخل
+// ونتبادل بين النصفين قدر الإمكان
+let fillOrder = 0;
+
+fillRows.forEach((row, rowIndex) => {
+    const middle = centerX;
+    const sections = [
+        { left: middle + 3, right: row.right },
+        { left: row.left, right: middle - 3 }
+    ];
+
+    // عكس ترتيب الجانبين في كل صف
+    if (rowIndex % 2 === 1) sections.reverse();
+
+    sections.forEach(section => {
+        const width = section.right - section.left;
+
+        if (width < 14) return;
+
+        let x = section.left;
+        let safety = 0;
+
+        while (x < section.right - 4 && safety++ < 40) {
+            const available = section.right - x;
+            const text = nextPhrase(available);
+            const textWidth = ctx.measureText(text).width;
+
+            if (textWidth > available) break;
+
+            addParticle(
+                text,
+                x + textWidth / 2,
+                row.y,
+                outlineDuration / 17 + fillOrder++
+            );
+
+            x += textWidth + wordGap;
+        }
     });
 });
 
-// =====================================================
-// الأنيميشن: ظهور متتابع وثابت بدون دوران
-// =====================================================
+// ==================================================
+// الظهور الرومانسي البطيء
+// ==================================================
 
 let frameCount = 0;
 
@@ -263,26 +253,24 @@ function animate() {
 
     frameCount++;
 
-    particles.forEach((p) => {
+    for (const p of particles) {
         if (frameCount >= p.delay && p.alpha < p.maxAlpha) {
-            p.alpha = Math.min(
-                p.maxAlpha,
-                p.alpha + 0.06
-            );
+            p.alpha = Math.min(p.maxAlpha, p.alpha + 0.035);
         }
 
         if (p.alpha > 0) {
-            ctx.fillStyle = `rgba(255, 107, 129, ${p.alpha})`;
+            ctx.fillStyle = `rgba(225, 105, 150, ${p.alpha})`;
             ctx.fillText(p.text, p.x, p.y);
         }
-    });
+    }
 
-    if (particles.some((p) => p.alpha < p.maxAlpha)) {
+    if (particles.some(p => p.alpha < p.maxAlpha)) {
         requestAnimationFrame(animate);
     }
 }
 
 animate();
+
 }
 
     /* =====================================================
