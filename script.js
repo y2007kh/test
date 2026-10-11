@@ -25,27 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
         ];
 
         // معادلة إحداثيات القلب الرياضية المضبوطة بدقة وثبات لإظهار شكل القلب بوضوح
-        function getHeartPoint(t) {
-            const x = 16 * Math.sin(t) ** 3;
-            const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
-            return { 
-                x: x * 11.5 + canvas.width / 2, 
-                y: y * 11.5 + canvas.height / 2 + 12 
-            };
-        }
+    
 
-       const particles = [];
-
-const centerX = canvas.width / 2;
-const centerY = canvas.height / 2;
-const heartScale = 155;
-const fontSize = 10;
-const lineHeight = 13;
-const wordGap = 4;
-
-ctx.font = `bold ${fontSize}px Tahoma`;
-
-let phraseIndex = 0;
+       
 
 // معادلة تحدد المساحة الداخلية للقلب
 const particles = [];
