@@ -892,24 +892,24 @@ if (lockNext) {
     if (contactUs) contactUs.hidden = true;
 
     // نراقب آخر صندوق محتوى في الصفحة
-    const underBoxes = document.querySelectorAll("#love-page .under-box");
-    const lastUnderBox = underBoxes.length
-        ? underBoxes[underBoxes.length - 1]
-        : null;
+    const finalSection = document.querySelector("#love-page .final-love");
 
-    if (lastUnderBox) {
-        const contactObserver = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        showContact();
-                        contactObserver.disconnect();
-                    }
-                });
-            },
-            { threshold: 0.2 }
-        );
+if (finalSection) {
+    const contactObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    showContact();
+                    contactObserver.disconnect();
+                }
+            });
+        },
+        {
+            threshold: 0.5
+        }
+    );
 
-        contactObserver.observe(lastUnderBox);
-    }
+    contactObserver.observe(finalSection);
+}
+            
 });
