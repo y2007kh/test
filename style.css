@@ -1,0 +1,812 @@
+/* =====================================================
+   RESET & GLOBAL STYLES
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden !important;
+    -webkit-text-size-adjust: 100%;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Tahoma, Arial, sans-serif;
+    color: #302735;
+    background: radial-gradient(circle at top, #fff7fb 0%, #f8eef7 45%, #eee8f5 100%);
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+}
+
+/* =====================================================
+   EXPERIENCE CONTAINER
+===================================================== */
+
+#experience {
+    width: 100%;
+    max-width: 100vw;
+    min-height: 100vh;
+    min-height: 100dvh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* =====================================================
+   SCREENS (ألغاز التجربة)
+===================================================== */
+
+.screen {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px calc(80px + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    overflow-x: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.97);
+    transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s ease;
+    -webkit-overflow-scrolling: touch;
+    z-index: 10;
+}
+
+.screen.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    z-index: 20;
+}
+
+.content {
+    width: min(100%, 520px);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+    margin: auto 0;
+}
+
+/* =====================================================
+   TYPOGRAPHY
+===================================================== */
+
+h1 {
+    font-size: clamp(32px, 8vw, 56px);
+    line-height: 1.4;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: clamp(24px, 6vw, 40px);
+    line-height: 1.5;
+}
+
+p {
+    font-size: 17px;
+    line-height: 2;
+    color: #6d6070;
+}
+
+.small-label {
+    font-size: 14px;
+    color: #9d7895;
+    letter-spacing: 1px;
+}
+
+.level-number {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 10px 30px rgba(80, 50, 80, 0.08);
+    color: #a36a92;
+    font-size: 18px;
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.main-btn {
+    border: none;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: #302735;
+    color: white;
+    font-size: 16px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.main-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(48, 39, 53, 0.2);
+}
+
+.main-btn:active {
+    transform: scale(0.96);
+}
+
+/* =====================================================
+   PUZZLE 1 (النجوم)
+===================================================== */
+
+.observation-puzzle {
+    width: min(100%, 320px);
+    aspect-ratio: 1 / 1;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 25px 70px rgba(80, 50, 80, 0.1);
+}
+
+.puzzle-star {
+    border: none;
+    background: transparent;
+    font-size: 30px;
+    color: #b99bb8;
+    cursor: pointer;
+    border-radius: 15px;
+    transition: transform 0.25s ease, color 0.25s ease, background 0.25s ease;
+}
+
+.puzzle-star:hover {
+    transform: scale(1.2);
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.puzzle-star.correct {
+    color: white;
+    background: #d99ac4;
+    transform: scale(1.15);
+    box-shadow: 0 0 25px rgba(217, 154, 196, 0.45);
+}
+
+.puzzle-star.wrong {
+    animation: wrongStar 0.35s ease;
+}
+
+@keyframes wrongStar {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(6px); }
+    75% { transform: translateX(-6px); }
+}
+
+/* =====================================================
+   PUZZLE 2 (الحروف)
+===================================================== */
+
+.secret-code {
+    display: flex;
+    direction: rtl;
+    gap: 12px;
+}
+
+.code-letter {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 10px 30px rgba(80, 50, 80, 0.07);
+    font-size: 22px;
+    color: #9e819b;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.code-letter.revealed {
+    background: #d99ac4;
+    color: white;
+    transform: translateY(-4px);
+}
+
+.hidden-items {
+    width: min(100%, 340px);
+    height: 240px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 30px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.72), rgba(250,239,248,0.65));
+    border: 1px solid rgba(255,255,255,0.9);
+    box-shadow: 0 25px 70px rgba(80,50,80,0.09);
+}
+
+.hidden-item {
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.6);
+    color: #a887a4;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease;
+    z-index: 3;
+}
+
+.hidden-item.found {
+    background: #d99ac4;
+    color: white;
+    transform: scale(1.1);
+}
+
+.item-one { top: 25px; right: 40px; }
+.item-two { bottom: 35px; left: 45px; }
+.item-three { top: 95px; left: 50%; transform: translateX(-50%); }
+
+.decoy-item {
+    position: absolute;
+    color: rgba(160,130,155,0.25);
+    user-select: none;
+    pointer-events: none;
+}
+
+.decoy-one { top: 30px; left: 40px; font-size: 22px; }
+.decoy-two { top: 70px; right: 100px; font-size: 18px; }
+.decoy-three { bottom: 25px; right: 40px; font-size: 24px; }
+.decoy-four { bottom: 65px; left: 120px; font-size: 18px; }
+.decoy-five { top: 150px; right: 60px; font-size: 16px; }
+
+/* =====================================================
+   PUZZLE 3 (الوردة التفاعلية)
+===================================================== */
+
+.rose-puzzle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.puzzle-subtitle {
+    font-size: 1.05rem;
+    color: #777;
+    margin-bottom: 25px;
+}
+
+.interactive-rose {
+    font-size: 90px;
+    cursor: pointer;
+    user-select: none;
+    animation: roseBreath 2.8s ease-in-out infinite;
+    transition: transform 0.7s ease, filter 0.7s ease;
+}
+
+.interactive-rose.bloom {
+    animation: roseBloom 1.2s ease forwards;
+    filter: drop-shadow(0 0 25px rgba(210, 80, 100, 0.4));
+}
+
+.rose-hint {
+    margin-top: 20px;
+    color: #999;
+    font-size: 0.9rem;
+    transition: opacity 0.5s ease;
+}
+
+.rose-hint.hide {
+    opacity: 0;
+}
+
+.rose-message {
+    opacity: 0;
+    transform: translateY(15px);
+    margin-top: 15px;
+    color: #555;
+    line-height: 2;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.rose-message.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.rose-next {
+    opacity: 0;
+    pointer-events: none;
+    margin-top: 20px;
+    transition: opacity 0.7s ease;
+}
+
+.rose-next.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.rose-lyrics-box {
+    display: none;
+    margin-top: 20px;
+    padding: 10px 18px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 182, 193, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(217, 154, 196, 0.2);
+    backdrop-filter: blur(8px);
+    max-width: 90%;
+}
+
+#roseLyricsText {
+    font-size: 1rem;
+    color: #a06b91;
+    font-weight: 600;
+    margin: 0;
+}
+
+@keyframes roseBreath {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+}
+
+@keyframes roseBloom {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1.1); }
+}
+
+/* =====================================================
+   PUZZLE 4 (القفل)
+===================================================== */
+
+.lock-box {
+    width: 100%;
+    max-width: 330px;
+    margin: 10px auto;
+    padding: 20px;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 15px 40px rgba(90, 60, 100, 0.08);
+    backdrop-filter: blur(10px);
+}
+
+.lock-screen {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.lock-screen span {
+    width: 50px;
+    height: 58px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(120, 90, 130, 0.2);
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.lock-hint {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.lock-hint p {
+    margin: 4px 0;
+    font-size: 14px;
+}
+
+.lock-inputs {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+}
+
+.lock-number {
+    height: 44px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.85);
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.lock-clear {
+    margin-top: 10px;
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(120, 90, 130, 0.1);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* =====================================================
+   PUZZLE 5 (الأبواب)
+===================================================== */
+
+.doors {
+    width: 100%;
+    max-width: 440px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 15px auto 10px;
+}
+
+.door {
+    min-height: 170px;
+    border: 1px solid rgba(120, 90, 130, 0.15);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(100, 70, 120, 0.08);
+}
+
+.door-icon { font-size: 42px; }
+.door-label { font-size: 13px; opacity: 0.7; }
+
+.door.wrong { animation: doorWrong 0.5s ease; }
+
+@keyframes doorWrong {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+}
+
+.door.correct {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(180, 120, 150, 0.25);
+}
+
+.doors.completed .door:not(.correct) {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* =====================================================
+   FEEDBACK & NEXT BUTTONS
+===================================================== */
+
+.puzzle-feedback,
+.code-feedback,
+.lock-feedback,
+.door-feedback {
+    min-height: 26px;
+    color: #ff6b81;
+    font-weight: bold;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.puzzle-feedback.show,
+.code-feedback.show,
+.lock-feedback.show,
+.door-feedback.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.puzzle-next {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.puzzle-next.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+/* =====================================================
+   LOVE PAGE (صفحة العرض الطويلة)
+===================================================== */
+
+body.love-page-open {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    position: relative;
+    width: 100%;
+}
+
+#love-page {
+    display: none;
+    width: 100%;
+    max-width: 100vw;
+    position: relative;
+    z-index: 100;
+    background: linear-gradient(180deg, #fff8fc 0%, #f8eef7 45%, #eee6f3 100%);
+    padding-bottom: calc(120px + env(safe-area-inset-bottom));
+}
+
+#love-page.visible {
+    display: block;
+}
+
+.story-block {
+    width: 100%;
+    max-width: 100vw;
+    min-height: 100vh;
+    min-height: 100dvh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px calc(80px + env(safe-area-inset-bottom));
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.story-block.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.personal-content,
+.love-content,
+.confession-content,
+.final-content {
+    width: 100%;
+    max-width: 620px;
+    text-align: center;
+}
+
+.personal-name, .love-small, .confession-small {
+    display: block;
+    font-size: 16px;
+    color: #9d7895;
+    margin-bottom: 20px;
+}
+
+.personal-title, .love-content h2, .confession-content h2 {
+    font-size: clamp(24px, 5vw, 38px);
+    line-height: 1.65;
+    font-weight: 500;
+    margin-bottom: 28px;
+}
+
+.personal-text p, .love-lines p, .journey-text p, .comfort-text p, .memory-text p, .response-text p {
+    font-size: 17px;
+    line-height: 1.9;
+    margin: 15px 0;
+    color: rgba(48,39,53,0.8);
+}
+
+.personal-text .highlight, .strong-line, .response-highlight {
+    font-weight: 600;
+    color: #302735;
+}
+
+.doctor-line { font-size: 28px !important; font-weight: 600; margin: 22px 0 !important; }
+.heart-word { font-size: 32px !important; font-weight: 600; margin-top: 22px !important; }
+
+/* =====================================================
+   MUSIC BUTTONS & WRAPPERS
+===================================================== */
+
+.memory-music-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.memory-music-btn {
+    background: linear-gradient(135deg, #ff6b81, #ff4757);
+    color: white;
+    border: none;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.memory-music-label {
+    font-size: 0.9rem;
+    color: #6d6070;
+    font-weight: 500;
+}
+
+/* =====================================================
+   CONFESSION & FINAL SECTIONS
+===================================================== */
+
+.rose-glow, .final-rose {
+    font-size: 60px;
+    margin-bottom: 12px;
+}
+
+.confession-title, .final-content h1 {
+    font-size: clamp(48px, 10vw, 90px);
+    font-weight: 600;
+    margin: 10px 0 25px;
+}
+
+.big-confession, .final-i-love-you {
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: 600;
+    margin-top: 25px;
+}
+
+/* =====================================================
+   FLOATING HEARTS & LYRICS BAR
+===================================================== */
+
+
+/* Floating hearts - FIX */
+.hearts-container {
+    position: fixed !important;
+    inset: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    pointer-events: none !important;
+    z-index: 9998 !important;
+    display: block;
+    contain: none;
+}
+
+.floating-heart {
+    position: absolute;
+    bottom: -50px;
+    display: block;
+    line-height: 1;
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+    animation-name: floatUpFixed;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes floatUpFixed {
+    0% {
+        transform: translate3d(0, 0, 0) rotate(0deg) scale(.7);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: .9;
+    }
+
+    85% {
+        opacity: .8;
+    }
+
+    100% {
+        transform: translate3d(20px, -115vh, 0) rotate(35deg) scale(1.2);
+        opacity: 0;
+    }
+}
+
+#love-page {
+    position: relative;
+    z-index: 1;
+    isolation: auto;
+}
+
+
+.lyrics-container {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(20, 20, 20, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 10px 18px;
+    border-radius: 30px;
+    z-index: 9999;
+    align-items: center;
+    gap: 12px;
+    max-width: 90%;
+}
+
+.lyrics-container.show {
+    display: flex;
+}
+
+.lyrics-text {
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: bold;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lyrics-toggle-btn {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 18px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN (موبايل)
+===================================================== */
+
+@media (max-width: 600px) {
+    .screen {
+        padding: 30px 16px calc(70px + env(safe-area-inset-bottom));
+    }
+    
+    .content { gap: 14px; }
+    h1 { font-size: 32px; }
+    h2 { font-size: 24px; }
+    p { font-size: 15px; }
+
+    .story-block {
+        padding: 50px 16px calc(80px + env(safe-area-inset-bottom));
+    }
+}
+
+.heart-canvas-container {
+    width: 100%;
+    max-width: 450px;
+    height: 400px;
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#loveHeartCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
