@@ -97,7 +97,7 @@ function addParticle(text, x, y, order) {
         x,
         y,
         alpha: 0,
-        delay: order * 15,
+        delay: order * 12,
         maxAlpha: 0.94
     });
 }
