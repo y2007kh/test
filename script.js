@@ -589,6 +589,7 @@ function playMusic(audio) {
     const lockClear = document.getElementById("lockClear");
     const lockFeedback = document.getElementById("lockFeedback");
     const lockNext = document.getElementById("lockNext");
+    const askFriendBtn = document.getElementById("askFriendBtn");
     const lockBox = document.querySelector(".lock-box");
     let enteredCode = "";
     const correctCode = "487";
@@ -610,28 +611,42 @@ function playMusic(audio) {
     }
 
     function checkLock() {
-        if (enteredCode === correctCode) {
-            lockSolved = true;
-            if (lockFeedback) {
-                lockFeedback.textContent = "اتفتح! 🔓✨";
-                lockFeedback.classList.add("show");
-            }
-            if (lockBox) lockBox.classList.add("unlocked");
-            if (lockNext) lockNext.classList.add("show");
-            lockNumbers.forEach((n) => n.disabled = true);
-        } else {
-            if (lockFeedback) {
-                lockFeedback.textContent = "تاريخنا المميز 🗝❤";
-                lockFeedback.classList.add("show");
-            }
-            if (lockBox) lockBox.classList.add("wrong");
-            setTimeout(() => {
-                if (lockBox) lockBox.classList.remove("wrong");
-                enteredCode = "";
-                updateLockDisplay();
-            }, 700);
+    if (enteredCode === correctCode) {
+        lockSolved = true;
+
+        if (lockFeedback) {
+            lockFeedback.textContent = "اتفتح! 🔓✨";
+            lockFeedback.classList.add("show");
         }
+
+        if (lockBox) lockBox.classList.add("unlocked");
+
+        // إخفاء الاستعانة بصديق عند إدخال الرقم الصحيح
+        if (askFriendBtn) askFriendBtn.style.display = "none";
+
+        // إظهار زرار الاستمرار
+        if (lockNext) lockNext.classList.add("show");
+
+        lockNumbers.forEach((n) => n.disabled = true);
+
+    } else {
+        if (lockFeedback) {
+            lockFeedback.textContent = "مش هو الرقم 😅 جرّبي تاني!";
+            lockFeedback.classList.add("show");
+        }
+
+        // إظهار الاستعانة بصديق عند إدخال رقم خاطئ
+        if (askFriendBtn) askFriendBtn.style.display = "inline-flex";
+
+        if (lockBox) lockBox.classList.add("wrong");
+
+        setTimeout(() => {
+            if (lockBox) lockBox.classList.remove("wrong");
+            enteredCode = "";
+            updateLockDisplay();
+        }, 700);
     }
+}}
 
     if (lockClear) {
         lockClear.addEventListener("click", () => {
