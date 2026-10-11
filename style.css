@@ -843,5 +843,29 @@ body.love-page-open {
 #contactUs[hidden] {
     display: none !important;
 }
+#downArrow.contact-visible,
 
+#contactUs.contact-visible {
+
+    animation: contactFadeIn 0.8s ease forwards;
+
+}
+
+@keyframes contactFadeIn {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(15px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
 
