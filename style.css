@@ -838,4 +838,10 @@ body.love-page-open {
 }
 
 
+/* إخفاء السهم وقسم التواصل في البداية */
+#downArrow[hidden],
+#contactUs[hidden] {
+    display: none !important;
+}
+
 
