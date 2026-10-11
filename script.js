@@ -905,7 +905,6 @@ if (lockNext) {
     if (contactUs) contactUs.hidden = true;
 
     // نراقب آخر صندوق محتوى في الصفحة
-    const finalSection = document.querySelector("#love-page .final-love");
 
 const finalSection = document.querySelector("#love-page .final-love");
 if (finalSection) {
