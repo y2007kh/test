@@ -274,44 +274,57 @@ animate();
 }
 function butterflies(x, y) {
     for (let i = 0; i < 8; i++) {
-        let b = document.createElement("img");
-        b.src = "butterfly.png"; // الفراشة بشفافية
+        const b = document.createElement("img");
+
+        b.src = "butterfly.png";
         b.className = "butterfly";
 
-        // البداية عند النقطة اللي ضغطت عليها
-        b.style.left = x + "px";
-        b.style.top = y + "px";
+        b.style.position = "fixed";
+        b.style.left = `${x}px`;
+        b.style.top = `${y}px`;
+        b.style.width = "28px";
+        b.style.height = "28px";
+        b.style.objectFit = "contain";
+        b.style.pointerEvents = "none";
+        b.style.zIndex = "99999";
 
         document.body.appendChild(b);
 
-        // إحداثيات الحركة العشوائية
-        let moveX = Math.random() * 400 - 200; // يمين/يسار
-        let moveY = Math.random() * 400 - 200; // فوق/تحت
+        const angle = (Math.PI * 2 * i) / 8;
+        const distance = 100 + Math.random() * 80;
+        const moveX = Math.cos(angle) * distance;
+        const moveY = Math.sin(angle) * distance - 35;
 
-        // حركة تدريجية
         b.animate([
-            { transform: 'translate(0px, 0px)', opacity: 1 },
-            { transform: `translate(${moveX}px, ${moveY}px)`, opacity: 0 }
+            {
+                transform: "translate(-50%, -50%) scale(0.2)",
+                opacity: 0
+            },
+            {
+                transform: "translate(-50%, -50%) scale(1)",
+                opacity: 1,
+                offset: 0.15
+            },
+            {
+                transform: `translate(calc(-50% + ${moveX}px),
+                    calc(-50% + ${moveY}px)) scale(0.6) rotate(180deg)`,
+                opacity: 0
+            }
         ], {
-            duration: 2500,
-            easing: 'ease-out',
-            fill: 'forwards'
+            duration: 1800,
+            easing: "ease-out",
+            fill: "forwards"
         });
 
-        // إزالة الفراشة بعد الحركة
-        setTimeout(() => b.remove(), 2800);
+        setTimeout(() => b.remove(), 1900);
     }
 }
 
-
-document.addEventListener("click", function (e) {
-    const button = e.target.closest("button");
-
-    if (!button) return;
+document.addEventListener("click", (e) => {
+    if (!e.target.closest("button")) return;
 
     butterflies(e.clientX, e.clientY);
 });
-
     /* =====================================================
         💖 إنشاء قلوب متطايرة في الخلفية (تظهر بانتظام في الصفحة الأخيرة)
     ===================================================== */
@@ -894,6 +907,7 @@ if (lockNext) {
     // نراقب آخر صندوق محتوى في الصفحة
     const finalSection = document.querySelector("#love-page .final-love");
 
+const finalSection = document.querySelector("#love-page .final-love");
 if (finalSection) {
     const contactObserver = new IntersectionObserver(
         (entries) => {
@@ -905,10 +919,9 @@ if (finalSection) {
             });
         },
         {
-            threshold: 0.5
+            threshold: 0.9
         }
     );
-
     contactObserver.observe(finalSection);
 }
             
