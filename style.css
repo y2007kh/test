@@ -816,12 +816,16 @@ body.love-page-open {
 
 
 .contact-us {
-    background: rgba(142,107,191,0.9);
-    color: white;
+     background: #302735;
+
+    color: #fff;
+
+    border-radius: 24px;
 
     padding: 26px 16px;
+
     margin-top: 30px;
-    border-radius: 20px;
+
     text-align: center;
 }
 
@@ -868,4 +872,12 @@ body.love-page-open {
         transform: translateY(0);
 
     }
-
+.flying-butterfly {
+    position: fixed;
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 99999;
+    will-change: transform, opacity;
+}
