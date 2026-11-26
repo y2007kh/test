@@ -5,18 +5,33 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
     let canvasInitialized = false;
 
-    function initLoveHeartCanvas() {
-        if (canvasInitialized) return;
-        canvasInitialized = true;
+    
+function initLoveHeartCanvas() {
+    if (canvasInitialized) return;
 
-        const canvas = document.getElementById("loveHeartCanvas");
-        if (!canvas) return;
-        const ctx = canvas.getContext("2d");
+    const canvas = document.getElementById("loveHeartCanvas");
+    if (!canvas) {
+        console.error("لم يتم العثور على العنصر #loveHeartCanvas");
+        return;
+    }
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+        console.error("تعذر إنشاء Canvas 2D context");
+        return;
+    }
+
+    canvasInitialized = true;
+
+    // كمّل باقي كود رسم القلب هنا كما هو
+
+
+       
 
         canvas.width = 400;
         canvas.height = 400;
 
-        const phrases = [
+         const phrases = [
     "أنا آسف", "I'm sorry", "Lo siento", "Je suis désolé",
     "Es tut mir leid", "Mi dispiace", "Извини меня",
     "ごめんなさい", "미안해", "Özür dilerim",
@@ -25,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "Desculpe", "Het spijt me", "Извинявай",
     "Perdóname", "मुझे माफ़ कर दो", "ขอโทษนะ",
     "Xin lỗi", "ขอโทษ", "I'm truly sorry",
-    "أنا آسف", "حقك عليا", "I apologize"
+    "أنا آسف", "حقك عليا", "I  apologize"
 ];
 
         // معادلة إحداثيات القلب الرياضية المضبوطة بدقة وثبات لإظهار شكل القلب بوضوح
@@ -64,6 +79,7 @@ const sorryPhrases = [
     "I'm sorry, حنين", "مش عايزك تزعلي مني",
     "I wish I could make it right"
 ];
+
 
 let phraseIndex = 0;
 
@@ -388,6 +404,7 @@ function startFloatingHearts() {
     const MUSIC = {
         confession: "rose.mp3", 
         memory: "B.m4a",
+        afterDor: "A.m4a",
         afterDoor: "N.m4a"
     };
 
@@ -403,7 +420,7 @@ function startFloatingHearts() {
     ];
 
     const roseSound = document.getElementById("roseSound");
-    if (roseSound) roseSound.src = MUSIC.afterDoor;
+    if (roseSound) roseSound.src = MUSIC.afterDor;
 
     const roseLyricsText = document.getElementById("roseLyricsText");
 
@@ -652,6 +669,20 @@ const lockClear = document.getElementById("lockClear");
 const lockFeedback = document.getElementById("lockFeedback");
 const lockNext = document.getElementById("lockNext");
 const askFriendBtn = document.getElementById("askFriendBtn");
+if (askFriendBtn) {
+    askFriendBtn.addEventListener("click", () => {
+        const phone = "201068685560";
+
+        const message = encodeURIComponent(
+            "رقم القفل موجود قدامك يا دكتوره 487 🔐"
+        );
+
+        const whatsappURL =
+            `https://wa.me/${phone}?text=${message}`;
+
+        window.open(whatsappURL, "_blank");
+    });
+}
 const lockBox = document.querySelector(".lock-box");
 
 let enteredCode = "";
@@ -761,11 +792,16 @@ if (codeNext) {
     });
 }
 
+
 if (lockNext) {
     lockNext.addEventListener("click", () => {
-        showScreen(currentScreen + 1);
+        // فتح صفحة الحب الطويلة بعد حل القفل
+        startFloatingHearts();
+        stopAllMusic();
+        openLovePage();
     });
 }
+
     /* =====================================================
         Puzzle 5 (الأبواب)
     ===================================================== */
@@ -792,7 +828,9 @@ if (lockNext) {
             } else {
                 door.classList.add("wrong");
                 if (doorFeedback) {
-                    doorFeedback.textContent = `كل الطرق في الآخر بتؤدي لقلبك 🚪💖`;
+                    doorFeedback.textContent = `عيناك سحرٌ مترفٌ كاد يُهلكني
+ فمَن ذا الذي عن جمال عيناك 
+يصبرُ 🚪💖`;
                     doorFeedback.classList.add("show");
                 }
                 setTimeout(() => door.classList.remove("wrong"), 500);
@@ -800,14 +838,15 @@ if (lockNext) {
         });
     });
 
-    if (doorNext) {
-        doorNext.addEventListener("click", () => {
-            // تفعيل القلوب المتطايرة فوراً وبشكل دائم عند الخروج من الأبواب للنهاية
-            startFloatingHearts(); 
-            stopAllMusic();
-            openLovePage();
-        });
-    }
+   
+if (doorNext) {
+    doorNext.addEventListener("click", () => {
+        // إيقاف أغنية الباب والانتقال إلى اللغز الأول
+        stopAllMusic();
+        showScreen(currentScreen + 1);
+    });
+}
+
 
     function openLovePage() {
         screens.forEach((screen) => {
