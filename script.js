@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
             x,
             y,
             alpha: 0,
-            delay: order * 2,
+            delay: order * 5,
             maxAlpha: 0.92
         });
     }
