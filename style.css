@@ -906,3 +906,29 @@ body.love-page-open {
     z-index: 99999;
     will-change: transform, opacity;
 }
+
+.sorry-message {
+    position: absolute;
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 90%;
+    text-align: center;
+
+    font-family: Tahoma, Arial;
+    font-size: 17px;
+    line-height: 2;
+
+    color: #a86f89;
+
+    opacity: 0;
+    animation: showSorry 2s ease forwards;
+    animation-delay: 1s;
+}
+
+@keyframes showSorry {
+    to {
+        opacity: 1;
+    }
+}
