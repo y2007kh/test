@@ -44,8 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
         "حقك عليا", "سامحيني",
         "أنا غلطان", "أنا آسف بجد",
         "مش قصدي أزعلك", "Please forgive me",
-        "يا سموكتي", "يا دكتورتي",
-        "I apologize", "I'm sorry my love"
+        "يا حنين", "مش هتبارد عليكي تاني ",
+        "I apologize", "I'm sorry babè"
     ];
 
     const particles = [];
