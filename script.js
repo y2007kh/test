@@ -17,12 +17,16 @@ document.addEventListener("DOMContentLoaded", () => {
         canvas.height = 400;
 
         const phrases = [
-            "أنا بحبك", "Te amo", "I love you", "Ich liebe dich", 
-            "Seni seviyorum", "Je t'aime", "Amo te", "bmoot feky", 
-            "Kocham cię", "Я тебя люблю", "사랑해", "Aku cinta kamu",
-            "Miluj tě", "Jeg elsker dig","smokah"," 君を愛してる", "Σ' αγαπώ", "Ti amo",
-            "أنا بحبك", "I love you", "Te amo", "Je t'aime"
-        ];
+    "أنا آسف", "I'm sorry", "Lo siento", "Je suis désolé",
+    "Es tut mir leid", "Mi dispiace", "Извини меня",
+    "ごめんなさい", "미안해", "Özür dilerim",
+    "Mujhe maaf kar do", "Maafkan aku", "Przepraszam",
+    "Promiň mi", "Συγγνώμη", "Desculpa",
+    "Desculpe", "Het spijt me", "Извинявай",
+    "Perdóname", "मुझे माफ़ कर दो", "ขอโทษนะ",
+    "Xin lỗi", "ขอโทษ", "I'm truly sorry",
+    "أنا آسف", "حقك عليا", "I apologize"
+];
 
         // معادلة إحداثيات القلب الرياضية المضبوطة بدقة وثبات لإظهار شكل القلب بوضوح
     
@@ -44,19 +48,21 @@ ctx.textAlign = "center";
 ctx.textBaseline = "middle";
 
 // عبارات متنوعة، مع كلمات قصيرة لملء الفراغات
-const lovePhrases = [
-    "أنا بحبك", "I love you", "Te amo",
-    "Je t'aime", "Ti amo", "بحبك",
-    "smokah", "يا دكتورتي", "قلبي ليكي",
-    "My love", "حبيبتي", "يا روحي",
-    "Seni seviyorum", "Ich liebe dich",
-    "أنتِ قلبي", "Forever", "يا قمري",
-    "Amo te", "كلّي ليكي", "وحشتيني",
-    "Kocham cię", "Mon amour", "يا سموكتي",
-    "بحب قلبك", "يا أجمل حاجة", "روحي",
-    "사랑해", "Aku cinta kamu", "يا حبيبتي",
-    "Ты моя любовь", "معاكي", "لآخر العمر",
-    "I choose you", "كل يوم بحبك أكتر"
+const sorryPhrases = [
+    "أنا آسف", "I'm sorry", "Lo siento",
+    "Je suis désolé", "Ti chiedo scusa", "حقك عليا",
+    "Forgive me", "سامحيني", "أنا غلطان",
+    "I'm truly sorry", "Mi dispiace", "يا سكر العمر ",
+    "Özür dilerim", "Es tut mir leid",
+    "معلش ", "I didn't mean to hurt you",
+    "Perdóname", "أنا مش قصدي أزعلك",
+    "Przepraszam", "Pardon me", "يا نونتي ",
+    "I'm sorry my love", "زعلِك مش هيّن عليا",
+    "ごめんなさい", "미안해", "Aku minta maaf",
+    "حقك عليا يا قلبي", "Please forgive me",
+    "Извини меня", "أنا آسف بجد",
+    "I'm sorry, حنين", "مش عايزك تزعلي مني",
+    "I wish I could make it right"
 ];
 
 let phraseIndex = 0;
